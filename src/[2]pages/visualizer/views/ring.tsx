@@ -1,24 +1,23 @@
 export const Ring = (props: {
-    containerRadius: number;
-    rradius: number; 
-    pixels?: number;
-    borderStyle?: string 
+  containerDiameter: number;
+  relDiameter: number; 
+  pixels?: number;
+  borderStyle?: string;
 }) => {
-  const { containerRadius, rradius, pixels = 1, borderStyle = 'solid' } = props;
+  const { containerDiameter, relDiameter, pixels = 1, borderStyle = 'solid' } = props;
 
-  const radius = containerRadius * rradius;
-  const margin = (containerRadius - radius) / 2;
-  
+  const diameter = containerDiameter * relDiameter;
+  const margin = (containerDiameter - diameter) / 2;
 
   return (
     <div
       className='bg-white rounded-full absolute'
       style={{
-        border: `${pixels}px ${borderStyle} white`,
+        border: `${pixels}px ${borderStyle} rgba(255, 255, 255, 0.5)`,
         backgroundColor: 'rgba(255, 255, 255, 0)',
         margin,
-        width: radius,
-        height: radius,
+        width: diameter,
+        height: diameter,
       }}/>
   );
 }

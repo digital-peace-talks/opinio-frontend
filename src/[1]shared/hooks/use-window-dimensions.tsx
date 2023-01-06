@@ -9,7 +9,7 @@ function getWindowDimensions() {
   return { height, width, min, isMinHeight };
 }
 
-export function useMinWindowDimension() {
+export function useWindowDimensions() {
   const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
   useEffect(() => {
