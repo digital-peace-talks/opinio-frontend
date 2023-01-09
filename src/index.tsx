@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { ChatsProvider } from './[2]pages/visualizer/contexts/chats';
+import { ChatProvider } from './[2]pages/visualizer/contexts/chat';
 import { OpinionsProvider } from './[2]pages/visualizer/contexts/opinions';
+import { ScreenProvider } from './[2]pages/visualizer/contexts/screen';
 import { Device } from './[2]pages/visualizer/views/device';
 
 const root = ReactDOM.createRoot(
@@ -13,12 +14,11 @@ root.render(
   <React.StrictMode>
     <div className='bg-gray-800 h-full w-full'>
         <OpinionsProvider>
-          <ChatsProvider>
-            <div className='flex w-full h-full p-5 gap-5'>
-              <Device username='Username A' userId='1'/>
-              <Device username='Username B' userId='2'/>
-            </div>
-          </ChatsProvider>
+          <ChatProvider>
+            <ScreenProvider>
+              < Device opinionId='1'/>
+            </ScreenProvider>
+          </ChatProvider>
         </OpinionsProvider>
     </div>   
   </React.StrictMode>

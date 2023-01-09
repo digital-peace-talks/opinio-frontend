@@ -2,8 +2,8 @@ import { useOpinionsContext } from "../hooks/use-opinions-context";
 import { Ring } from "./ring";
 import { OpinionCircle } from "./user-circle";
 
-export const Graph = (props: { containerLength: number; userId: string }) => {
-  const { containerLength, userId } = props;
+export const Graph = (props: { containerLength: number; opinionId: string }) => {
+  const { containerLength, opinionId } = props;
   const { opinions } = useOpinionsContext();
 
   const colors = [
@@ -35,7 +35,7 @@ export const Graph = (props: { containerLength: number; userId: string }) => {
         <Ring containerDiameter={containerLength} relDiameter={ringRelDiameter}/>
       ))}
       {Array.isArray(opinions) && opinions.map((opinion) =>
-        <OpinionCircle containerLength={containerLength} opinion={opinion} userId={userId}/>
+        <OpinionCircle containerLength={containerLength} opinion={opinion} opinionId={opinionId}/>
       )}
     </div>
   )

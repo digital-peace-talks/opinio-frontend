@@ -2,8 +2,7 @@ import React, { createContext, useMemo, useState, useEffect } from "react";
 
 // --- Interfaces ---
 export interface Opinion {
-  userId: string;
-  username: string;
+  id: string;
   position: {
     relX: number;
     relY: number;
@@ -27,12 +26,12 @@ export const OpinionsContext = createContext<OpinionProps | null>(null);
 const getOpinions = ([setOpinions]:  [SetOpinions]) => (
 ) => {
   const opinions: Opinion[] = [
-    { userId: '1', username: 'Giovanni', position: { relX: 0.2, relY: 0.8 } },
-    { userId: '2', username: 'Sally', position: { relX: 0.34, relY: 0.15 } },
-    { userId: '3', username: 'Patrick', position: { relX: 0.175, relY: 0.298 } },
-    { userId: '4', username: 'Julia', position: { relX: 0.45, relY: 0.119 } },
-    { userId: '5', username: 'Angus', position: { relX: 0.834, relY: 0.5 } },
-    { userId: '6', username: 'Mary', position: { relX: 0.766, relY: 0.6 } },
+    { id: '1', position: { relX: 0.2, relY: 0.8 } },
+    { id: '2', position: { relX: 0.34, relY: 0.15 } },
+    { id: '3', position: { relX: 0.175, relY: 0.298 } },
+    { id: '4', position: { relX: 0.45, relY: 0.119 } },
+    { id: '5', position: { relX: 0.834, relY: 0.5 } },
+    { id: '6', position: { relX: 0.766, relY: 0.6 } },
   ];
 
   setOpinions(opinions);
@@ -45,7 +44,7 @@ const advanceOpinion = ([setOpinions]: [SetOpinions]) =>
     setOpinions((opinions) => {
       if (opinions) {
         return opinions.map((opinion) => {
-          if (opinion.userId === id) {
+          if (opinion.id === id) {
             const { relX, relY } = opinion.position;
 
             const deltaRelX = (0.5 - relX);

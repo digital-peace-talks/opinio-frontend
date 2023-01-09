@@ -15,42 +15,63 @@
 }
 
 *, *::before, *::after {
-  /* box-sizing: inherit; */
-
   margin: 0;
   padding: 0;
 
   overflow: hidden;
 }
 
-html {
-  /* box-sizing: border-box; */
-}
-
 html, body, #root {
-  height: 100vh;
-  width: 100vw;
+  left: 0; right: 0; top: 0; bottom: 0;
+  position: absolute;
   
   background: rgb(233, 81, 200); /* should never show up on any device */
 }
 
 .rotate {
-  -webkit-transform: rotate(90deg);
-  -moz-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  -o-transform: rotate(90deg);
-  transform: rotate(90deg);
-  -webkit-transform-origin: top left;
-  -moz-transform-origin: top left;
-  -ms-transform-origin: top left;
-  -o-transform-origin: top left;
-  transform-origin: top left;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -webkit-transform-origin: center;
+  -moz-transform-origin: center;
+  -ms-transform-origin: center;
+  -o-transform-origin: center;
+  transform-origin: center;
 }
 
-input:focus {
+input[type=text]:focus {
   outline: 0;
 }
 
 button:focus {
   outline: 0
+}
+
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+/***** Range Input - Thumb Styles *****/
+/***** Chrome, Safari, Opera, and Edge Chromium *****/
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  margin-top: -12px; /* Centers thumb on the track */
+  background-color: white;
+  height: 2px;
+  width: 100%;    
+}
+
+/***** Firefox *****/
+input[type="range"]::-moz-range-thumb {
+  border: none; /*Removes extra border that FF applies*/
+  border-radius: 0; /*Removes default border-radius that FF applies*/
+  background-color: white;
+  height: 2px;
+  width: 100%;
 }

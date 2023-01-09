@@ -1,35 +1,49 @@
 import { useState } from "react";
 import { Opinion } from "../contexts/opinions";
+import { Screen } from "../contexts/screen";
+import { useChatContext } from "../hooks/use-chat-context";
 import { useOpinionsContext } from "../hooks/use-opinions-context";
+import { useScreenContext } from "../hooks/use-screen-context";
 
-export const OpinionCircle = (params: { containerLength: number; opinion: Opinion; userId: string }) => {
-  const { containerLength, opinion, userId } = params;
-  const { advanceOpinion } = useOpinionsContext(); 
+export const OpinionCircle = (params: { containerLength: number; opinion: Opinion; opinionId: string }) => {
+  const { setChatIndex } = useChatContext();
+  const { setScreen } = useScreenContext();
+
+  const { containerLength, opinion, opinionId } = params;
+  const { advanceOpinion } = useOpinionsContext();
 
   const relLength = 0.025;
-  const length = relLength * containerLength;
-  const x = ~~((opinion.position.relX - relLength / 2) * containerLength);
-  const y = ~~((opinion.position.relY - relLength / 2) * containerLength);
+  const outerRelLength = relLength * 4;
+  const length = relLength * containerLength * 4;
+  const visibleLength = relLength * containerLength;
+  const x = ~~((opinion.position.relX - outerRelLength / 2) * containerLength);
+  const y = ~~((opinion.position.relY - outerRelLength / 2) * containerLength);
 
-  let color = opinion.userId === userId ? 'bg-blue-400' : 'bg-white';
-  const border = opinion.userId === userId ? '1px solid rgba(255, 255, 255, 0.5)' : undefined;
-  const zIndex = opinion.userId === userId ? 100 : undefined;
+  let color = opinion.id === opinionId ? 'bg-blue-400' : 'bg-white';
+  const border = opinion.id === opinionId ? '1px solid rgba(255, 255, 255, 0.5)' : undefined;
+  const zIndex = opinion.id === opinionId ? 100 : undefined;
 
   return (
     <div
-      className={`absolute aspect-square rounded-full ${color}`}
+      className={`flex justify-center items-center absolute aspect-square rounded-full hover:cursor-pointer`}
       style={{
         width: length,
         left: x,
         top: y,
-        border,
         zIndex,
       }}
       onClick={() => {
-        if (opinion.userId !== '1') {
-          advanceOpinion({ id: opinion.userId, advance: 0.05 });
-          advanceOpinion({ id: opinion.userId, advance: 0.05 });
+        if (opinion.id !== '1') {
+          setChatIndex(Number(opinion.id) - 2);
+          setScreen(Screen.Chat);
+      
+          advanceOpinion({ id: opinion.id, advance: 0.05 });
+          advanceOpinion({ id: "1", advance: 0.05 });
         }
-      }}/>
+      }}>
+      <div
+        className={`aspect-square rounded-full ${color}`}
+        style={{ width: visibleLength, border }}/>
+    </div>
   );
 }

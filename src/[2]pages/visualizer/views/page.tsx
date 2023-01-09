@@ -5,12 +5,12 @@ import { PageBody } from './page-body';
 import { PageQuestion } from "./page-question";
 import { PageTitle } from './page-title';
 
-export const RadarScreen = memo((props: { userId: string }) => {
-  const { userId} = props;
+export const RadarScreen = memo((props: { opinionId: string }) => {
+  const { opinionId } = props;
 
   return (
     <div className='flex flex-col w-full h-full justify-start bg-black'>
-      <PageBody height={400} userId={userId}/>
+      <PageBody height={400} opinionId={opinionId}/>
     </div>
   );
 });
