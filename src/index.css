@@ -3,7 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* Custom font declaratations */
 @font-face {
   font-family: 'Lufga-Regular';
@@ -13,6 +12,26 @@
 @font-face {
   font-family: 'Lufga-Medium';
   src: local('Lufga-Medium'), url(./[1]shared/fonts/lufga/lufgamedium.otf) format('opentype');
+}
+
+*, *::before, *::after {
+  /* box-sizing: inherit; */
+
+  margin: 0;
+  padding: 0;
+
+  overflow: hidden;
+}
+
+html {
+  /* box-sizing: border-box; */
+}
+
+html, body, #root {
+  height: 100vh;
+  width: 100vw;
+  
+  background: rgb(233, 81, 200); /* should never show up on any device */
 }
 
 .rotate {
@@ -26,4 +45,12 @@
   -ms-transform-origin: top left;
   -o-transform-origin: top left;
   transform-origin: top left;
+}
+
+input:focus {
+  outline: 0;
+}
+
+button:focus {
+  outline: 0
 }

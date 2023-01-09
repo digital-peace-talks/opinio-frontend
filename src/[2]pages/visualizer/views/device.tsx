@@ -33,17 +33,17 @@ export const Device = memo((props: Props) => {
   const buttonContent = view === View.Radar ? 'Chat' : 'Radar';
 
   return (
-    <div className='flex flex-col w-1/2 bg-black m-5'>
+    <div className='flex flex-col w-1/2 h-full bg-black'>
       <div className='bg-gray-800 text-gray-300 text-center p-5'><p>{username}</p></div>
       <PageTitle height={60}/>
       <PageQuestion height={30}/>
-      <div className='w-full h-full'>
+      <div className='w-full flex-1'>
         {[View.Radar].includes(view) &&
           <RadarScreen userId={userId}/>}
         {[View.Chat].includes(view) &&
           <ChatScreen userId={userId}/>}
       </div>
-      <div className='mt-auto bg-white h-16'>
+      <div className='bg-white h-16'>
         <button
           className='w-24 h-full flex justify-center items-center'
           onClick={() => onButtonClick([view, setView])()}>

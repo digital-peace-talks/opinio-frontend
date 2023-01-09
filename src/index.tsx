@@ -11,11 +11,13 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <div className='flex justify-center bg-gray-800 w-screen h-screen'>
+    <div className='bg-gray-800 h-full w-full'>
         <OpinionsProvider>
           <ChatsProvider>
-            <Device username='Username A' userId='1'/>
-            <Device username='Username B' userId='2'/>
+            <div className='flex w-full h-full p-5 gap-5'>
+              <Device username='Username A' userId='1'/>
+              <Device username='Username B' userId='2'/>
+            </div>
           </ChatsProvider>
         </OpinionsProvider>
     </div>   

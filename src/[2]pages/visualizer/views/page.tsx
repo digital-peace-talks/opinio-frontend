@@ -8,9 +8,6 @@ import { PageTitle } from './page-title';
 export const RadarScreen = memo((props: { userId: string }) => {
   const { userId} = props;
 
-  const titleHeight = 60;
-  const questionHeight = 40;
-
   return (
     <div className='flex flex-col w-full h-full justify-start bg-black'>
       <PageBody height={400} userId={userId}/>
