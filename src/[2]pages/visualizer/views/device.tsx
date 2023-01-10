@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import { Screen } from '../contexts/screen';
 import { useScreenContext } from '../hooks/use-screen-context';
 import { ChatScreen } from './chat';
@@ -13,8 +13,6 @@ interface Props {
 export const Device = memo((props: Props) => {
   const { opinionId } = props;
   const { screen } = useScreenContext();
-
-  const buttonContent = screen === Screen.Radar ? 'Chat' : 'Radar';
 
   return (
     <div className='flex flex-col h-full bg-black'>

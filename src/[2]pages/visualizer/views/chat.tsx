@@ -107,7 +107,7 @@ const DisagreementSlider = () => {
     if (!mounted) {
       setMounted(true);
     }
-  }, []);
+  }, [mounted]);
 
   const debouncedValueChange = useDebouncedCallback({
     fn: (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -145,7 +145,7 @@ const RespectSlider = () => {
     if (!mounted) {
       setMounted(true);
     }
-  }, []);
+  }, [mounted]);
 
   const debouncedValueChange = useDebouncedCallback({
     fn: (e: React.ChangeEvent<HTMLInputElement>) => {

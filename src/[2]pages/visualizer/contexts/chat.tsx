@@ -207,6 +207,7 @@ export const ChatProvider = (props: any) => {
       setRespect: setRespect([chatIndex, setTrigger]),
       appendMessages: appendMessages([chatIndex, setTrigger]),
     }),
+    // eslint-disable-next-line
     [trigger, chatIndex]
   );
 

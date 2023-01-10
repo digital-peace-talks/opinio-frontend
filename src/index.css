@@ -25,7 +25,7 @@ html, body, #root {
   left: 0; right: 0; top: 0; bottom: 0;
   position: absolute;
   
-  background: rgb(233, 81, 200); /* should never show up on any device */
+  background: black;
 }
 
 .rotate {
@@ -49,7 +49,7 @@ button:focus {
   outline: 0
 }
 
-input[type='range'] {
+input[type=range] {
   -webkit-appearance: none;
   appearance: none;
   background: transparent;
@@ -58,7 +58,7 @@ input[type='range'] {
 
 /***** Range Input - Thumb Styles *****/
 /***** Chrome, Safari, Opera, and Edge Chromium *****/
-input[type="range"]::-webkit-slider-thumb {
+input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none; /* Override default look */
   appearance: none;
   margin-top: -12px; /* Centers thumb on the track */
@@ -68,7 +68,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 /***** Firefox *****/
-input[type="range"]::-moz-range-thumb {
+input[type=range]::-moz-range-thumb {
   border: none; /*Removes extra border that FF applies*/
   border-radius: 0; /*Removes default border-radius that FF applies*/
   background-color: white;

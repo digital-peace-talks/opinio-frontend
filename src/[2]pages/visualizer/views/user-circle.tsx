@@ -1,8 +1,6 @@
-import { useState } from "react";
 import { Opinion } from "../contexts/opinions";
 import { Screen } from "../contexts/screen";
 import { useChatContext } from "../hooks/use-chat-context";
-import { useOpinionsContext } from "../hooks/use-opinions-context";
 import { useScreenContext } from "../hooks/use-screen-context";
 
 export const OpinionCircle = (params: { containerLength: number; opinion: Opinion; opinionId: string }) => {
@@ -10,7 +8,6 @@ export const OpinionCircle = (params: { containerLength: number; opinion: Opinio
   const { setScreen } = useScreenContext();
 
   const { containerLength, opinion, opinionId } = params;
-  const { advanceOpinion } = useOpinionsContext();
 
   const relLength = 0.025;
   const outerRelLength = relLength * 4;
@@ -36,9 +33,6 @@ export const OpinionCircle = (params: { containerLength: number; opinion: Opinio
         if (opinion.id !== '1') {
           setChatIndex(Number(opinion.id) - 2);
           setScreen(Screen.Chat);
-      
-          advanceOpinion({ id: opinion.id, advance: 0.05 });
-          advanceOpinion({ id: "1", advance: 0.05 });
         }
       }}>
       <div

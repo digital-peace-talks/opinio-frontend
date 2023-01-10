@@ -34,7 +34,10 @@ export const useDebouncedCallback = <A = void, R = void>(
   const { fn, ms = 300 } = props;
   const [debouncedFun, teardown] = useMemo(() => {
       return debounce<A, R>(fn, ms);
-  }, deps);
+  },
+  // eslint-disable-next-line
+  [...deps, fn, ms]
+  );
 
   useEffect(() => () => teardown(), [teardown]);
 
