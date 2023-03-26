@@ -1,13 +1,12 @@
-import { memo } from 'react';
-import { PageBody } from './page-body';
+import {memo} from 'react';
+import {PageBody} from './page-body';
 
 
-export const RadarScreen = memo((props: { opinionId: string }) => {
-  const { opinionId } = props;
+export const RadarScreen = memo(() => {
 
-  return (
-    <div className='flex flex-col w-full h-full justify-start bg-black'>
-      <PageBody height={400} opinionId={opinionId}/>
-    </div>
-  );
+    return (
+        <div className='flex flex-col w-full h-full justify-start bg-black'>
+            <PageBody height={400}/>
+        </div>
+    );
 });
