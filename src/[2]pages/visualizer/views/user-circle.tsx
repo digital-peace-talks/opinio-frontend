@@ -1,43 +1,48 @@
-import { Opinion } from "../contexts/opinions";
-import { Screen } from "../contexts/screen";
-import { useChatContext } from "../hooks/use-chat-context";
-import { useScreenContext } from "../hooks/use-screen-context";
+import {Opinion} from "../contexts/opinions";
+import {Screen} from "../contexts/screen";
+import {useChatContext} from "../hooks/use-chat-context";
+import {useScreenContext} from "../hooks/use-screen-context";
+import {useOpinionsContext} from "../hooks/use-opinions-context";
 
-export const OpinionCircle = (params: { containerLength: number; opinion: Opinion; opinionId: string }) => {
-  const { setChatIndex } = useChatContext();
-  const { setScreen } = useScreenContext();
+export const OpinionCircle = (params: { containerLength: number; opinion: Opinion; }) => {
+    const {setChatIndex} = useChatContext();
+    const {setScreen} = useScreenContext();
+    const {currentOpinion, setCurrentOpinion} = useOpinionsContext();
 
-  const { containerLength, opinion, opinionId } = params;
+    const {containerLength, opinion} = params;
 
-  const relLength = 0.025;
-  const outerRelLength = relLength * 4;
-  const length = relLength * containerLength * 4;
-  const visibleLength = relLength * containerLength;
-  const x = ~~((opinion.position.relX - outerRelLength / 2) * containerLength);
-  const y = ~~((opinion.position.relY - outerRelLength / 2) * containerLength);
+    const relLength = 0.025;
+    const outerRelLength = relLength * 4;
+    const length = relLength * containerLength * 2;
+    const visibleLength = relLength * containerLength;
+    // const x = ~~((opinion.coord.x - outerRelLength / 2) * containerLength);
+    // const y = ~~((opinion.coord.y - outerRelLength / 2) * containerLength);
+    const x = ~~(((opinion.coord.x + 1) / 2 - outerRelLength / 2) * containerLength);
+    const y = ~~(((opinion.coord.y + 1) / 2 - outerRelLength / 2) * containerLength);
 
-  let color = opinion.id === opinionId ? 'bg-blue-400' : 'bg-white';
-  const border = opinion.id === opinionId ? '1px solid rgba(255, 255, 255, 0.5)' : undefined;
-  const zIndex = opinion.id === opinionId ? 100 : undefined;
+    let color = opinion.id === currentOpinion.id ? 'bg-blue-400' : 'bg-white';
+    const border = opinion.id === currentOpinion.id ? '1px solid rgba(255, 255, 255, 0.5)' : undefined;
+    const zIndex = opinion.id === currentOpinion.id ? 100 : undefined;
 
-  return (
-    <div
-      className={`flex justify-center items-center absolute aspect-square rounded-full hover:cursor-pointer`}
-      style={{
-        width: length,
-        left: x,
-        top: y,
-        zIndex,
-      }}
-      onClick={() => {
-        if (opinion.id !== '1') {
-          setChatIndex(Number(opinion.id) - 2);
-          setScreen(Screen.Chat);
-        }
-      }}>
-      <div
-        className={`aspect-square rounded-full ${color}`}
-        style={{ width: visibleLength, border }}/>
-    </div>
-  );
+    // console.log('x =', x, '==>', ((opinion.coord.x)), 'y =', y, '==>', ((opinion.coord.y)))
+    
+    return (
+        <div
+            className={`flex justify-center items-center absolute aspect-square rounded-full hover:cursor-pointer`}
+            style={{
+                width: length,
+                left: x,
+                top: y,
+                zIndex,
+            }}
+            onClick={() => {
+                setChatIndex(opinion.id);
+                setScreen(Screen.Chat);
+                setCurrentOpinion(opinion);
+            }}>
+            <div
+                className={`aspect-square rounded-full ${color}`}
+                style={{width: visibleLength, border}}/>
+        </div>
+    );
 }

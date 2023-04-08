@@ -1,99 +1,129 @@
-import React, { createContext, useMemo, useState, useEffect } from "react";
+import React, {createContext, useEffect, useMemo, useState} from "react";
+import {useSessionContext} from "../hooks/use-session-context";
+import axiosInstance from "../../../[1]shared/util/axios";
+import {Session} from "./session";
 
 // --- Interfaces ---
 export interface Opinion {
-  id: string;
-  position: {
-    relX: number;
-    relY: number;
-  }
+    connected: boolean;
+    coord: { x: number, y: number }
+    group: number;
+    id: number;
+    label: string;
+    opinion: string;
 }
 
 // --- Types ---
 type SetOpinions = React.Dispatch<React.SetStateAction<Opinion[] | null>>;
 
 interface OpinionProps {
-  opinions: Opinion[];
-  setOpinions: SetOpinions;
-  getOpinions: () => void;
-  advanceOpinion: (props: { id: string; advance: number }) => void;
+    opinions: Opinion[];
+    setOpinions: SetOpinions;
+    currentOpinion: Opinion;
+    setCurrentOpinion: React.Dispatch<React.SetStateAction<Opinion | null>>
+    getOpinions: () => void;
+    advanceOpinion: (props: { id: string; advance: number }) => void;
+    updateOpinion: (respect: number, dissent: number) => void;
 }
 
 // --- Context ----
 export const OpinionsContext = createContext<OpinionProps | null>(null);
 
 // ---- Logic -----
-const getOpinions = ([setOpinions]:  [SetOpinions]) => (
-) => {
-  const opinions: Opinion[] = [
-    { id: '1', position: { relX: 0.2, relY: 0.8 } },
-    { id: '2', position: { relX: 0.34, relY: 0.15 } },
-    { id: '3', position: { relX: 0.175, relY: 0.298 } },
-    { id: '4', position: { relX: 0.45, relY: 0.119 } },
-    { id: '5', position: { relX: 0.834, relY: 0.5 } },
-    { id: '6', position: { relX: 0.766, relY: 0.6 } },
-  ];
-
-  setOpinions(opinions);
-};
 
 const advanceOpinion = ([setOpinions]: [SetOpinions]) =>
-  (props: { id: string; advance: number }) => {
-    const { id, advance } = props;
+    (props: { id: number; advance: number }) => {
+        const {id, advance} = props;
 
-    setOpinions((opinions) => {
-      if (opinions) {
-        return opinions.map((opinion) => {
-          if (opinion.id === id) {
-            const { relX, relY } = opinion.position;
+        setOpinions((opinions) => {
+            if (opinions) {
+                return opinions.map((opinion) => {
+                    if (opinion.id === id) {
+                        const {x: relX, y: relY} = opinion.coord;
 
-            const deltaRelX = (0.5 - relX);
-            const deltaRelY = (0.5 - relY);
-            const delta = Math.sqrt(deltaRelX ** 2 + deltaRelY ** 2);
+                        const deltaRelX = (0.5 - relX);
+                        const deltaRelY = (0.5 - relY);
+                        const delta = Math.sqrt(deltaRelX ** 2 + deltaRelY ** 2);
 
-            const angle = Math.atan2(deltaRelY, deltaRelX);
+                        const angle = Math.atan2(deltaRelY, deltaRelX);
 
-            const advanceX = advance * Math.cos(angle);
-            const advanceY = advance * Math.sin(angle);
+                        const advanceX = advance * Math.cos(angle);
+                        const advanceY = advance * Math.sin(angle);
 
-            const advanceSmaller = advance < delta;
+                        const advanceSmaller = advance < delta;
 
-            const newRelX = relX + (advanceSmaller ? advanceX : deltaRelX);
-            const newRelY = relY + (advanceSmaller ? advanceY : deltaRelY);
-  
-            return {
-              ...opinion,
-              position: {
-                relX: newRelX,
-                relY: newRelY,
-              }
+                        const newRelX = relX + (advanceSmaller ? advanceX : deltaRelX);
+                        const newRelY = relY + (advanceSmaller ? advanceY : deltaRelY);
+
+                        return {
+                            ...opinion,
+                            position: {
+                                relX: newRelX,
+                                relY: newRelY,
+                            }
+                        }
+                    }
+
+                    return opinion;
+                });
             }
-          }
-  
-          return opinion;
+            return opinions;
         });
-      }
-      return opinions;
-    });
-  }
+    };
+
+
+const getLayout: (sessionId: Session) => Promise<Opinion[]> | undefined = (sessionId: Session) => {
+    if (!sessionId) return;
+
+    return axiosInstance.get(`${sessionId}/layout`).then((response) => {
+        return response.data.nodes as Opinion[]
+    })
+}
+
+
+const updateLayout = ([setOpinions, currentOpinion]: [SetOpinions, Opinion | null]) => (respect: number, dissent: number) => {
+    console.log('currentOpinon', currentOpinion)
+    const sessionId = localStorage.getItem('opinio-session');
+
+    return axiosInstance.post(`${sessionId}/update`, {
+        'left': 0,
+        'right': currentOpinion?.id,
+        respect,
+        dissent
+    }).then((response) => {
+        setOpinions(response.data.nodes as Opinion[]);
+    })
+}
 
 // --- Provider ----
 export const OpinionsProvider = (props: any) => {
-  const [opinions, setOpinions] = useState<Opinion[] | null>(null);
+    const {session} = useSessionContext();
+    const [opinions, setOpinions] = useState<Opinion[] | null>(null);
+    const [currentOpinion, setCurrentOpinion] = useState<Opinion | null>(null);
 
-  const value = useMemo(
-    () => ({
-      opinions,
-      setOpinions,
-      getUsers: getOpinions([setOpinions]),
-      advanceOpinion: advanceOpinion([setOpinions]),
-    }),
-    [opinions, setOpinions]
-  );
+    const value = useMemo(
+        () => ({
+            opinions,
+            setOpinions,
+            currentOpinion,
+            setCurrentOpinion,
+            getUsers: {},
+            advanceOpinion: advanceOpinion([setOpinions]),
+            updateOpinion: updateLayout([setOpinions, currentOpinion])
+        }),
+        [currentOpinion, opinions]
+    );
 
-  useEffect(() => {
-    getOpinions([setOpinions])();
-  }, []);
+    useEffect(() => {
+        const nodes = getLayout(session);
 
-  return <OpinionsContext.Provider value={value} {...props} />;
+        if (nodes) {
+            nodes?.then((response) => {
+                setOpinions(response);
+                setCurrentOpinion(response[0])
+            });
+        }
+    }, [session])
+
+    return <OpinionsContext.Provider value={value} {...props} />;
 };
