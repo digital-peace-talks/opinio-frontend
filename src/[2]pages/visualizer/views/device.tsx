@@ -1,13 +1,12 @@
 import {memo} from 'react';
-import {Screen} from '../contexts/screen';
-import {useScreenContext} from '../hooks/use-screen-context';
 import {ChatScreen} from './chat';
 import {RadarScreen} from './page';
 import {PageQuestion} from './page-question';
 import {PageTitle} from './page-title';
 
+import {Routes, Route} from 'react-router-dom';
+
 export const Device = memo(() => {
-    const {screen} = useScreenContext();
 
     return (
         <div className='flex flex-col h-full bg-black'>
@@ -15,10 +14,10 @@ export const Device = memo(() => {
             <PageTitle height={60}/>
             <PageQuestion height={30}/>
             <div className='w-full flex-1'>
-                {[Screen.Radar].includes(screen) &&
-                  <RadarScreen/>}
-                {[Screen.Chat].includes(screen) &&
-                  <ChatScreen/>}
+                <Routes>
+                    <Route path="/" element={<RadarScreen/>}/>
+                    <Route path="/chat/:id" element={<ChatScreen/>}/>
+                </Routes>
             </div>
         </div>
     );

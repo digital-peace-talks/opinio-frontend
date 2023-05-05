@@ -1,4 +1,4 @@
-import React, {createContext, useMemo, useState} from 'react';
+import React, {createContext, useEffect, useMemo, useState} from 'react';
 import {sleep} from '../../../[1]shared/util/sleep';
 
 interface Message {
@@ -138,21 +138,9 @@ const responseMessagesArray: Messages[] = [
     ]
 ];
 
-const disagreementArray = [
-    5,
-    5,
-    5,
-    5,
-    5,
-];
+let disagreementArray: number[] = []
 
-const respectArray = [
-    0,
-    0,
-    0,
-    0,
-    0,
-];
+let respectArray: number[] = []
 
 let responseIndexArray = [
     0,
@@ -210,6 +198,11 @@ export const ChatProvider = (props: any) => {
         // eslint-disable-next-line
         [trigger, chatIndex]
     );
+
+    useEffect(() => {
+        respectArray = new Array(60).fill(0)
+        disagreementArray = new Array(60).fill(5)
+    }, [])
 
     return <ChatContext.Provider value={value} {...props} />;
 };

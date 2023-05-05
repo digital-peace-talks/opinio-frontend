@@ -3,14 +3,22 @@ import {useChatContext} from '../hooks/use-chat-context';
 import {ReactComponent as SendSvg} from '../assets/paper-plane.svg';
 import {ReactComponent as BackSvg} from '../assets/left-arrow.svg';
 import {useDebouncedCallback} from '../../../[1]shared/hooks/use-debounce';
-import {Screen} from '../contexts/screen';
-import {useScreenContext} from '../hooks/use-screen-context';
 import {useOpinionsContext} from "../hooks/use-opinions-context";
+import {useParams, useNavigate} from 'react-router-dom'
+import {filterOpinion} from "../../../[1]shared/util/filter-opinion";
 
 
 export const ChatScreen = memo(() => {
-    const {chatIndex, opinion, messages} = useChatContext();
-    const {currentOpinion} = useOpinionsContext()
+    const navigate = useNavigate()
+    const {id} = useParams()
+    const {chatIndex, opinion, messages, setChatIndex} = useChatContext();
+    const {opinions, currentOpinion, setCurrentOpinion} = useOpinionsContext()
+
+    useEffect(() => {
+        if (id === undefined || !opinions) return navigate('/')
+        setChatIndex(+id)
+        setCurrentOpinion(filterOpinion(opinions, +id)[0])
+    }, [currentOpinion, id, navigate, opinions, setChatIndex, setCurrentOpinion])
 
     return (
         <div className='flex flex-col w-full h-full'>
@@ -23,15 +31,16 @@ export const ChatScreen = memo(() => {
             <div className='flex flex-1'>
                 <DisagreementSlider/>
                 <div className='flex flex-1 flex-col gap-6 p-6 bg-gray-800 overflow-x-hidden overflow-y-auto'>
-                    {messages && messages.map((message) => {
-                        const isUser = message.opinionId === currentOpinion.id;
+                    {messages && messages.map((message, index) => {
+                        const isUser = message.opinionId === currentOpinion?.id;
 
                         const padding = isUser ? 'pl-10' : 'pr-10';
                         const margin = isUser ? 'ml-auto' : 'mr-auto';
                         const bgColor = isUser ? 'bg-gray-600' : 'bg-gray-700';
 
                         return (
-                            <div className={`flex shrink-0 ${margin} ${padding}`}>
+                            <div className={`flex shrink-0 ${margin} ${padding}`}
+                                 key={message?.opinionId + '-' + index}>
                                 <div className={`rounded-md ${bgColor} p-3 text-white`}>
                                     {<p className='whitespace-pre-wrap'>{message.message}</p>}
                                 </div>
@@ -47,7 +56,7 @@ export const ChatScreen = memo(() => {
 });
 
 const MessageBox = () => {
-    const {setScreen} = useScreenContext();
+    const navigate = useNavigate()
     const {currentOpinion} = useOpinionsContext()
 
     const [input, setInput] = useState<string>('');
@@ -58,7 +67,7 @@ const MessageBox = () => {
         <div className='flex bg-gray-800 w-full h-[58px] border-t border-gray-500'>
             <div
                 className='flex justify-center items-center w-16 h-full'
-                onClick={() => setScreen(Screen.Radar)}>
+                onClick={() => navigate('/')}>
                 <BackSvg width={16} height={16} fill='white'/>
             </div>
             <div className='w-full h-full pt-2'>
@@ -80,7 +89,7 @@ const MessageBox = () => {
                             setInput('. . .');
 
                             await appendMessages({
-                                opinionId: currentOpinion.id,
+                                opinionId: currentOpinion?.id,
                                 message: input,
                             });
 
@@ -96,10 +105,15 @@ const MessageBox = () => {
 }
 
 const DisagreementSlider = () => {
-    const {disagreement, setDisagreement, respect} = useChatContext();
-    const {updateOpinion} = useOpinionsContext()
+    const {disagreement, setDisagreement, respect, chatIndex} = useChatContext();
+    const {updateOpinion, currentOpinion} = useOpinionsContext()
     const [value, setValue] = useState<number>(disagreement);
     const [mounted, setMounted] = useState<boolean>(false);
+
+    useEffect(() => {
+        setMounted(false)
+        setValue(disagreement)
+    }, [chatIndex, disagreement])
 
     useEffect(() => {
         if (!mounted) {
@@ -112,7 +126,7 @@ const DisagreementSlider = () => {
             const disagreementValue = Number(e.target.value)
             setDisagreement(disagreementValue);
             setValue(disagreementValue);
-            updateOpinion(respect, disagreementValue);
+            updateOpinion(respect, disagreementValue, currentOpinion);
         },
         ms: 200,
     }, []);
@@ -138,10 +152,15 @@ const DisagreementSlider = () => {
 }
 
 const RespectSlider = () => {
-    const {respect, setRespect, disagreement} = useChatContext();
-    const {updateOpinion} = useOpinionsContext()
+    const {respect, setRespect, disagreement, chatIndex} = useChatContext();
+    const {updateOpinion, currentOpinion} = useOpinionsContext()
     const [value, setValue] = useState<number>(respect);
     const [mounted, setMounted] = useState<boolean>(false);
+
+    useEffect(() => {
+        setMounted(false)
+        setValue(respect)
+    }, [chatIndex, respect])
 
     useEffect(() => {
         if (!mounted) {
@@ -154,7 +173,7 @@ const RespectSlider = () => {
             const respectValue = Number(e.target.value)
             setValue(respectValue);
             setRespect(respectValue);
-            updateOpinion(respectValue, disagreement);
+            updateOpinion(respectValue, disagreement, currentOpinion);
         },
         ms: 200,
     }, []);
@@ -171,7 +190,7 @@ const RespectSlider = () => {
                 step={0.1}
                 value={!mounted ? value : undefined}
                 // @ts-ignore
-                orient='vertical'
+                // orient='vertical'
                 className='flex flex-col w-12 h-full bg-blue-500 border-x relative hover:cursor-grab'
                 style={{WebkitAppearance: 'slider-vertical'}}
                 onChange={debouncedValueChange}/>
