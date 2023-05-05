@@ -15,15 +15,21 @@ export interface Opinion {
 
 // --- Types ---
 type SetOpinions = React.Dispatch<React.SetStateAction<Opinion[] | null>>;
+type SetIsLayoutRequested = React.Dispatch<React.SetStateAction<boolean>>;
 
 interface OpinionProps {
     opinions: Opinion[];
     setOpinions: SetOpinions;
+    tempOpinions: Opinion[];
     currentOpinion: Opinion;
     setCurrentOpinion: React.Dispatch<React.SetStateAction<Opinion | null>>
     getOpinions: () => void;
     advanceOpinion: (props: { id: string; advance: number }) => void;
-    updateOpinion: (respect: number, dissent: number) => void;
+    updateOpinion: (respect: number, dissent: number, opinion: Opinion) => void;
+    mergeOpinion: () => void;
+    isLayoutRequested: boolean;
+    disableNodes: boolean;
+    setDisableNodes: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // --- Context ----
@@ -81,37 +87,51 @@ const getLayout: (sessionId: Session) => Promise<Opinion[]> | undefined = (sessi
 }
 
 
-const updateLayout = ([setOpinions, currentOpinion]: [SetOpinions, Opinion | null]) => (respect: number, dissent: number) => {
-    console.log('currentOpinon', currentOpinion)
+const updateLayout = ([setTempOpinions, setLoading]: [SetOpinions, SetIsLayoutRequested]) => (respect: number, dissent: number, opinion: Opinion) => {
     const sessionId = localStorage.getItem('opinio-session');
+    setLoading(true)
 
-    return axiosInstance.post(`${sessionId}/update`, {
+    axiosInstance.post(`${sessionId}/update`, {
         'left': 0,
-        'right': currentOpinion?.id,
-        respect,
-        dissent
+        'right': opinion?.id,
+        respect: respect === undefined ? 0 : respect,
+        dissent: dissent === undefined ? 5 : dissent
     }).then((response) => {
-        setOpinions(response.data.nodes as Opinion[]);
+        setTempOpinions(response.data.nodes as Opinion[]);
+        setLoading(false)
     })
+}
+
+const mergeLayout = ([setOpinions, setTempOpinions, tempOpinions]: [SetOpinions, SetOpinions, Opinion[] | null]) => () => {
+    setTempOpinions(null);
+    setOpinions(tempOpinions);
 }
 
 // --- Provider ----
 export const OpinionsProvider = (props: any) => {
     const {session} = useSessionContext();
     const [opinions, setOpinions] = useState<Opinion[] | null>(null);
+    const [tempOpinions, setTempOpinions] = useState<Opinion[] | null>(null);
     const [currentOpinion, setCurrentOpinion] = useState<Opinion | null>(null);
+    const [isLayoutRequested, setIsLayoutRequested] = useState(false);
+    const [disableNodes, setDisableNodes] = useState(false);
 
     const value = useMemo(
         () => ({
             opinions,
             setOpinions,
+            tempOpinions,
             currentOpinion,
             setCurrentOpinion,
             getUsers: {},
             advanceOpinion: advanceOpinion([setOpinions]),
-            updateOpinion: updateLayout([setOpinions, currentOpinion])
+            updateOpinion: updateLayout([setTempOpinions, setIsLayoutRequested]),
+            mergeOpinion: mergeLayout([setOpinions, setTempOpinions, tempOpinions]),
+            isLayoutRequested,
+            disableNodes,
+            setDisableNodes
         }),
-        [currentOpinion, opinions]
+        [currentOpinion, disableNodes, isLayoutRequested, opinions, tempOpinions]
     );
 
     useEffect(() => {
@@ -120,7 +140,6 @@ export const OpinionsProvider = (props: any) => {
         if (nodes) {
             nodes?.then((response) => {
                 setOpinions(response);
-                setCurrentOpinion(response[0])
             });
         }
     }, [session])
