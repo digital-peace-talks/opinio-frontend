@@ -1,8 +1,8 @@
-import {Opinion} from "../contexts/opinions";
-import {useOpinionsContext} from "../hooks/use-opinions-context";
 import {useNavigate} from 'react-router-dom'
+import {Opinion} from "[2]pages/radar/contexts/opinions";
+import {useOpinionsContext} from "[2]pages/radar/hooks/use-opinions-context";
 
-export const OpinionCircle = (params: { containerLength: number; opinion: Opinion; }) => {
+export const Node = (params: { containerLength: number; opinion: Opinion; }) => {
     const navigate = useNavigate();
     const {currentOpinion} = useOpinionsContext();
 

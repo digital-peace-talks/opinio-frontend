@@ -1,8 +1,8 @@
 import {memo} from 'react';
-import {ChatScreen} from './chat';
-import {RadarScreen} from './page';
-import {PageQuestion} from './page-question';
-import {PageTitle} from './page-title';
+import {ChatScreen} from '[2]pages/chat/views/ChatScreen';
+import {RadarScreen} from '[2]pages/radar/views/RadarScreen';
+import {PageQuestion} from '[2]pages/PageQuestion';
+import {PageTitle} from '[2]pages/PageTitle';
 
 import {Routes, Route} from 'react-router-dom';
 

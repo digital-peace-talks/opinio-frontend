@@ -1,4 +1,4 @@
-import {useOpinionsContext} from "../hooks/use-opinions-context";
+import {useOpinionsContext} from "./radar/hooks/use-opinions-context";
 import {useLocation} from 'react-router-dom'
 
 export const PageQuestion = (props: { height: number }) => {

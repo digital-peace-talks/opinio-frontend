@@ -1,11 +1,11 @@
 import {memo, useEffect, useRef, useState} from 'react';
 import {useChatContext} from '../hooks/use-chat-context';
-import {ReactComponent as SendSvg} from '../assets/paper-plane.svg';
-import {ReactComponent as BackSvg} from '../assets/left-arrow.svg';
-import {useDebouncedCallback} from '../../../[1]shared/hooks/use-debounce';
-import {useOpinionsContext} from "../hooks/use-opinions-context";
+import {ReactComponent as SendSvg} from '[2]pages/chat/assets/paper-plane.svg';
+import {ReactComponent as BackSvg} from '[2]pages/chat/assets/left-arrow.svg';
+import {useDebouncedCallback} from '[1]shared/hooks/use-debounce';
+import {useOpinionsContext} from "[2]pages/radar/hooks/use-opinions-context";
 import {useParams, useNavigate} from 'react-router-dom'
-import {filterOpinion} from "../../../[1]shared/util/filter-opinion";
+import {filterOpinion} from "[1]shared/util/filter-opinion";
 
 
 export const ChatScreen = memo(() => {

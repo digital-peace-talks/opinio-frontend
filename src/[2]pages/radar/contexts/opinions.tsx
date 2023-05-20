@@ -82,6 +82,7 @@ const getLayout: (sessionId: Session) => Promise<Opinion[]> | undefined = (sessi
     if (!sessionId) return;
 
     return axiosInstance.get(`${sessionId}/layout`).then((response) => {
+        console.log(response.data)
         return response.data.nodes as Opinion[]
     })
 }

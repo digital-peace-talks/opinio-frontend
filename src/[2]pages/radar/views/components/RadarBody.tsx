@@ -1,10 +1,10 @@
-import {Graph} from "./radar";
-import {Ring} from "./ring";
 import {useEffect, useState} from "react";
-import {useOpinionsContext} from "../hooks/use-opinions-context";
-import Snackbar from "../../../[1]shared/components/Snackbar";
+import {Graph} from "[2]pages/radar/views/components/Graph";
+import {Ring} from "[2]pages/radar/views/components/Ring";
+import {useOpinionsContext} from "[2]pages/radar/hooks/use-opinions-context";
+import Snackbar from "[1]shared/components/Snackbar";
 
-export const PageBody = (props: { height: number; }) => {
+export const RadarBody = (props: { height: number; }) => {
     const {height} = props;
     const {isLayoutRequested, tempOpinions, mergeOpinion, setDisableNodes, disableNodes} = useOpinionsContext();
     const [showMessage, setShowMessage] = useState(false);
