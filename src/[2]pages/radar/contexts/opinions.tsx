@@ -4,13 +4,25 @@ import axiosInstance from "../../../[1]shared/util/axios";
 import {Session} from "./session";
 
 // --- Interfaces ---
+export interface Coord {
+    x: number,
+    y: number
+}
+
 export interface Opinion {
     connected: boolean;
-    coord: { x: number, y: number }
+    coord: Coord
     group: number;
     id: number;
     label: string;
     opinion: string;
+}
+
+export interface Edge {
+    dissent: number
+    left: number
+    respect: number
+    right: number
 }
 
 // --- Types ---
@@ -18,6 +30,7 @@ type SetOpinions = React.Dispatch<React.SetStateAction<Opinion[] | null>>;
 type SetIsLayoutRequested = React.Dispatch<React.SetStateAction<boolean>>;
 
 interface OpinionProps {
+    edges: Edge[];
     opinions: Opinion[];
     setOpinions: SetOpinions;
     tempOpinions: Opinion[];
@@ -78,12 +91,11 @@ const advanceOpinion = ([setOpinions]: [SetOpinions]) =>
     };
 
 
-const getLayout: (sessionId: Session) => Promise<Opinion[]> | undefined = (sessionId: Session) => {
+const getLayout: (sessionId: Session) => Promise<[Opinion[], Edge[]]> | undefined = (sessionId: Session) => {
     if (!sessionId) return;
 
     return axiosInstance.get(`${sessionId}/layout`).then((response) => {
-        console.log(response.data)
-        return response.data.nodes as Opinion[]
+        return [response.data.nodes as Opinion[], response.data.edges as Edge[]]
     })
 }
 
@@ -111,6 +123,7 @@ const mergeLayout = ([setOpinions, setTempOpinions, tempOpinions]: [SetOpinions,
 // --- Provider ----
 export const OpinionsProvider = (props: any) => {
     const {session} = useSessionContext();
+    const [edges, setEdges] = useState<Edge[] | null>(null);
     const [opinions, setOpinions] = useState<Opinion[] | null>(null);
     const [tempOpinions, setTempOpinions] = useState<Opinion[] | null>(null);
     const [currentOpinion, setCurrentOpinion] = useState<Opinion | null>(null);
@@ -119,6 +132,7 @@ export const OpinionsProvider = (props: any) => {
 
     const value = useMemo(
         () => ({
+            edges,
             opinions,
             setOpinions,
             tempOpinions,
@@ -132,7 +146,7 @@ export const OpinionsProvider = (props: any) => {
             disableNodes,
             setDisableNodes
         }),
-        [currentOpinion, disableNodes, isLayoutRequested, opinions, tempOpinions]
+        [currentOpinion, disableNodes, isLayoutRequested, opinions, edges, tempOpinions]
     );
 
     useEffect(() => {
@@ -140,7 +154,9 @@ export const OpinionsProvider = (props: any) => {
 
         if (nodes) {
             nodes?.then((response) => {
-                setOpinions(response);
+                const [nodes, edges] = response
+                setOpinions(nodes);
+                setEdges(edges);
             });
         }
     }, [session])

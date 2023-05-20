@@ -17,7 +17,7 @@ export const ChatScreen = memo(() => {
     useEffect(() => {
         if (id === undefined || !opinions) return navigate('/')
         setChatIndex(+id)
-        setCurrentOpinion(filterOpinion(opinions, +id)[0])
+        setCurrentOpinion(filterOpinion(opinions, +id) || null)
     }, [currentOpinion, id, navigate, opinions, setChatIndex, setCurrentOpinion])
 
     return (
@@ -182,7 +182,7 @@ const RespectSlider = () => {
         <div
             className='relative'
             style={{backgroundImage: 'linear-gradient(to top, #5a0012, #ff6c00, #00ff5e)'}}>
-            <p className={`absolute rotate top-52 left-1.5 text-white select-none`}>RESPECT</p>
+            <p className={`absolute rotate top-52 -left-4 text-white select-none`}>Respectfulness</p>
             <input
                 type='range'
                 min={-5}

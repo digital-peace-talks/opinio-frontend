@@ -1,6 +1,6 @@
 import {useOpinionsContext} from "[2]pages/radar/hooks/use-opinions-context";
 import {Ring} from "[2]pages/radar/views/components/Ring";
-import {Node} from "[2]pages/radar/views/components//Node";
+import {Node} from "[2]pages/radar/views/components/Node";
 
 export const Graph = (props: { containerLength: number; }) => {
     const {containerLength} = props;
