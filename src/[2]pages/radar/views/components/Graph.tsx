@@ -1,6 +1,6 @@
-import {useOpinionsContext} from "../hooks/use-opinions-context";
-import {Ring} from "./ring";
-import {OpinionCircle} from "./user-circle";
+import {useOpinionsContext} from "[2]pages/radar/hooks/use-opinions-context";
+import {Ring} from "[2]pages/radar/views/components/Ring";
+import {Node} from "[2]pages/radar/views/components/Node";
 
 export const Graph = (props: { containerLength: number; }) => {
     const {containerLength} = props;
@@ -38,8 +38,8 @@ export const Graph = (props: { containerLength: number; }) => {
             </div>
 
             {Array.isArray(opinions) && opinions.map((opinion) =>
-                <OpinionCircle containerLength={containerLength} opinion={opinion}
-                               key={opinion.id}/>
+                <Node containerLength={containerLength} opinion={opinion}
+                      key={opinion.id}/>
             )}
         </div>
     )

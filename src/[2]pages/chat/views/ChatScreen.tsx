@@ -1,11 +1,11 @@
 import {memo, useEffect, useRef, useState} from 'react';
 import {useChatContext} from '../hooks/use-chat-context';
-import {ReactComponent as SendSvg} from '../assets/paper-plane.svg';
-import {ReactComponent as BackSvg} from '../assets/left-arrow.svg';
-import {useDebouncedCallback} from '../../../[1]shared/hooks/use-debounce';
-import {useOpinionsContext} from "../hooks/use-opinions-context";
+import {ReactComponent as SendSvg} from '[2]pages/chat/assets/paper-plane.svg';
+import {ReactComponent as BackSvg} from '[2]pages/chat/assets/left-arrow.svg';
+import {useDebouncedCallback} from '[1]shared/hooks/use-debounce';
+import {useOpinionsContext} from "[2]pages/radar/hooks/use-opinions-context";
 import {useParams, useNavigate} from 'react-router-dom'
-import {filterOpinion} from "../../../[1]shared/util/filter-opinion";
+import {filterOpinion} from "[1]shared/util/filter-opinion";
 
 
 export const ChatScreen = memo(() => {
@@ -17,7 +17,7 @@ export const ChatScreen = memo(() => {
     useEffect(() => {
         if (id === undefined || !opinions) return navigate('/')
         setChatIndex(+id)
-        setCurrentOpinion(filterOpinion(opinions, +id)[0])
+        setCurrentOpinion(filterOpinion(opinions, +id) || null)
     }, [currentOpinion, id, navigate, opinions, setChatIndex, setCurrentOpinion])
 
     return (
@@ -182,7 +182,7 @@ const RespectSlider = () => {
         <div
             className='relative'
             style={{backgroundImage: 'linear-gradient(to top, #5a0012, #ff6c00, #00ff5e)'}}>
-            <p className={`absolute rotate top-52 left-1.5 text-white select-none`}>RESPECT</p>
+            <p className={`absolute rotate top-52 -left-4 text-white select-none`}>Respectfulness</p>
             <input
                 type='range'
                 min={-5}
