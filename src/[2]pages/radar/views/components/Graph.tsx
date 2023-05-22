@@ -19,7 +19,7 @@ export const Graph = (props: { containerLength: number; }) => {
 
     return (
         <div
-            className='aspect-square rounded-full relative'
+            className='aspect-square rounded-full relative overflow-visible'
             style={{
                 width: containerLength,
                 backgroundImage: `radial-gradient(
