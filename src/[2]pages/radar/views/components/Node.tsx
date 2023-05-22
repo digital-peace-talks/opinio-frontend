@@ -41,7 +41,7 @@ export const Node = ({containerLength, opinion}: NodeProps) => {
 
             {
                 myEdges.map((ele) => <Edge from={opinion.coord} to={opinions[ele.right].coord}
-                                           containerLength={containerLength}/>)
+                                           containerLength={containerLength} isBlack={opinion.id === 59}/>)
             }
             <div
                 className={clsx('flex justify-center items-center absolute aspect-square rounded-full', isConnectedTo60 ? 'cursor-pointer' : 'cursor-no-drop pointer-events-none')}
