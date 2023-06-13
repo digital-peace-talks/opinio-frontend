@@ -12,7 +12,7 @@ export const Device = memo(() => {
         <div className='flex flex-col h-full bg-black'>
             {/* <div className='bg-gray-800 text-gray-300 text-center p-5'><p>{username}</p></div> */}
             <PageTitle height={60}/>
-            <PageQuestion height={30}/>
+            <PageQuestion/>
             <div className='w-full flex-1'>
                 <Routes>
                     <Route path="/" element={<RadarScreen/>}/>
