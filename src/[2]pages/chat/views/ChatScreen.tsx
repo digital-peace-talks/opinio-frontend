@@ -2,6 +2,7 @@ import {memo, useEffect, useRef, useState} from 'react';
 import {useChatContext} from '../hooks/use-chat-context';
 import {ReactComponent as SendSvg} from '[2]pages/chat/assets/paper-plane.svg';
 import {ReactComponent as BackSvg} from '[2]pages/chat/assets/left-arrow.svg';
+import {ReactComponent as StarSvg} from '[2]pages/chat/assets/star.svg';
 import {useDebouncedCallback} from '[1]shared/hooks/use-debounce';
 import {useOpinionsContext} from "[2]pages/radar/hooks/use-opinions-context";
 import {useParams, useNavigate} from 'react-router-dom'
@@ -21,7 +22,7 @@ export const ChatScreen = memo(() => {
     }, [currentOpinion, id, navigate, opinions, setChatIndex, setCurrentOpinion])
 
     return (
-        <div className='flex flex-col w-full h-full'>
+        <div className='flex flex-col w-full h-full max-w-2xl mx-auto'>
             <div className='flex justify-center items-center p-2'>
                 <p className='text-white text-center'>
                     Chat with Opinion #{chatIndex}:<br/>
@@ -64,41 +65,49 @@ const MessageBox = () => {
     const {appendMessages} = useChatContext();
 
     return (
-        <div className='flex bg-gray-800 w-full h-[58px] border-t border-gray-500'>
+        <div className='flex flex-col items-center w-full h-auto bg-gray-800 relative overflow-visible'>
             <div
-                className='flex justify-center items-center w-16 h-full'
+                className='text-white mb-2 px-3 py-1.5 border border-gray-200 rounded-md absolute bottom-full left-1/2 -translate-x-1/2 text-md font-bold cursor-pointer flex items-center justify-center gap-2 group opacity-90 hover:opacity-100 transition-all duration-300'
                 onClick={() => navigate('/')}>
-                <BackSvg width={16} height={16} fill='white'/>
+                <StarSvg className='w-4 h-4 text-transparent group-hover:text-white transition-all  duration-300'/>
+                <p>Submit Rating</p>
             </div>
-            <div className='w-full h-full pt-2'>
-                <div className='bg-gray-700 w-full h-[40px] rounded'>
+            <div className='flex bg-gray-800 w-full h-[58px] border-t border-gray-500'>
+                <div
+                    className='flex justify-center items-center w-16 h-full'
+                    onClick={() => navigate('/')}>
+                    <BackSvg width={16} height={16} fill='white'/>
+                </div>
+                <div className='w-full h-full pt-2'>
+                    <div className='bg-gray-700 w-full h-[40px] rounded'>
           <textarea
               readOnly={readOnlyRef.current}
               className='bg-gray-700 w-full h-full rounded px-5 pt-2 text-white'
               value={input}
               onChange={(e) => setInput(e.target.value)}/>
+                    </div>
                 </div>
-            </div>
-            <div className='flex justify-center items-center w-16 h-full'>
-                <button
-                    disabled={readOnlyRef.current}
-                    className='flex justify-center items-center border rounded border-gray-800 w-10 h-10'
-                    onClick={async () => {
-                        if (input) {
-                            readOnlyRef.current = true;
-                            setInput('. . .');
+                <div className='flex justify-center items-center w-16 h-full'>
+                    <button
+                        disabled={readOnlyRef.current}
+                        className='flex justify-center items-center border rounded border-gray-800 w-10 h-10'
+                        onClick={async () => {
+                            if (input) {
+                                readOnlyRef.current = true;
+                                setInput('. . .');
 
-                            await appendMessages({
-                                opinionId: currentOpinion?.id,
-                                message: input,
-                            });
+                                await appendMessages({
+                                    opinionId: currentOpinion?.id,
+                                    message: input,
+                                });
 
-                            readOnlyRef.current = false;
-                            setInput('');
-                        }
-                    }}>
-                    <SendSvg width={24} height={24} fill='white' className='-rotate-45 pb-1'/>
-                </button>
+                                readOnlyRef.current = false;
+                                setInput('');
+                            }
+                        }}>
+                        <SendSvg width={24} height={24} fill='white' className='-rotate-45 pb-1'/>
+                    </button>
+                </div>
             </div>
         </div>
     );

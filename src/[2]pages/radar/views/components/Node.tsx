@@ -31,13 +31,13 @@ export const Node = ({containerLength, opinion}: NodeProps) => {
 
     return (
         <>
-            {opinion.id === 59 &&
-              <div
-                className='absolute text-[8px] text-white text-bold z-50 !leading-sm bg-gray-600 text-center rounded z-50 p-0.5'
-                style={{
-                    left: x + 'px',
-                    top: (+y - 15) + 'px',
-                }}>This is your opinion</div>}
+            {/*{opinion.id === 59 &&*/}
+            {/*  <div*/}
+            {/*    className='absolute text-[8px] text-white text-bold z-50 !leading-sm bg-gray-600 text-center rounded p-0.5'*/}
+            {/*    style={{*/}
+            {/*        left: x + 'px',*/}
+            {/*        top: (+y - 15) + 'px',*/}
+            {/*    }}>This is your opinion</div>}*/}
 
             {
                 myEdges.map((ele) => <Edge from={opinion.coord} to={opinions[ele.right].coord}
