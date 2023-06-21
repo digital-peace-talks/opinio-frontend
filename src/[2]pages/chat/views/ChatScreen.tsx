@@ -144,7 +144,7 @@ const DisagreementSlider = () => {
         <div
             className='relative'
             style={{backgroundImage: 'linear-gradient(to top, gray, #2c023d)'}}>
-            <p className={`absolute rotate top-52 -left-12 text-white select-none`}>DISAGREEMENT</p>
+            <p className={`absolute -rotate-90 top-1/2 -translate-y-1/2 -left-12 text-white select-none`}>DISAGREEMENT</p>
             <input
                 type='range'
                 min={0}
@@ -191,7 +191,7 @@ const RespectSlider = () => {
         <div
             className='relative'
             style={{backgroundImage: 'linear-gradient(to top, #5a0012, #ff6c00, #00ff5e)'}}>
-            <p className={`absolute rotate top-52 -left-4 text-white select-none`}>Respectfulness</p>
+            <p className={`absolute -rotate-90 top-1/2 -translate-y-1/2 left-[0.35rem] text-white select-none`}>Empathy</p>
             <input
                 type='range'
                 min={-5}
