@@ -42,9 +42,21 @@ export const Edge = ({from, to, containerLength, isBlack}: EdgeProps) => {
     const yTo = (((to.y + 1) / 2 - outerRelLength / 2) * containerLength).toFixed(2);
 
     return (
-        <div className='absolute inset-0 -z-0' style={{width: containerLength, height: containerLength}}>
-            <Line x1={+xFrom + nodeLength / 2} y1={+yFrom + nodeLength / 2} x2={+xTo + nodeLength / 2}
-                  y2={+yTo + nodeLength / 2} color={isBlack ? 'dark' : 'light'}/>
-        </div>
+      <div
+        className="absolute inset-0 -z-0"
+        style={{
+          width: containerLength,
+          height: containerLength,
+          strokeDasharray: isBlack ? '5 2' : '0',
+        }}
+      >
+        <Line
+          x1={+xFrom + nodeLength / 2}
+          y1={+yFrom + nodeLength / 2}
+          x2={+xTo + nodeLength / 2}
+          y2={+yTo + nodeLength / 2}
+          color={isBlack ? 'dark' : 'light'}
+        />
+      </div>
     );
 }

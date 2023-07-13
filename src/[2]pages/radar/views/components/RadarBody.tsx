@@ -32,12 +32,14 @@ export const RadarBody = (props: { height: number; }) => {
 
             <div
                 className='flex flex-col justify-center items-center relative'
-                style={{
-                    height, opacity: disableNodes ? 0.85 : 1,
-                    pointerEvents: disableNodes ? 'none' : 'inherit',
-                }}>
-                <Ring containerDiameter={height * 0.93} relDiameter={1} borderStyle='dashed'/>
-                <Graph containerLength={height * 0.87}/>
+                // style={{
+                //     height, opacity: disableNodes ? 0.85 : 1,
+                //     pointerEvents: disableNodes ? 'none' : 'inherit',
+                // }}
+            >
+                {/* <Ring containerDiameter={height * 0.93} relDiameter={1} borderStyle='dashed'/> */}
+                {/* <Graph containerLength={height * 0.87}/> */}
+                <Graph containerLength={height * 1.1}/>
             </div>
         </div>
     )
