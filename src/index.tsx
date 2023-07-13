@@ -13,7 +13,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <BrowserRouter>
-        <div className='bg-gray-800 h-full w-full'>
+        <div className='bg-black  w-full'>
             <SessionProvider>
                 <OpinionsProvider>
                     <ChatProvider>
