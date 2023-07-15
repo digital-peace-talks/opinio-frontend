@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {useEffect, useState} from "react";
 import {Graph} from "[2]pages/radar/views/components/Graph";
-import {Ring} from "[2]pages/radar/views/components/Ring";
+// import {Ring} from "[2]pages/radar/views/components/Ring";
 import {useOpinionsContext} from "[2]pages/radar/hooks/use-opinions-context";
 import Snackbar from "[1]shared/components/Snackbar";
 
@@ -31,7 +32,7 @@ export const RadarBody = (props: { height: number; }) => {
             {showMessage && <Snackbar message="Updating Layout..." duration={!tempOpinions ? 5000 : 2000}/>}
 
             <div
-                className='flex flex-col justify-center items-center relative'
+                className='flex flex-col justify-center items-center relative w-full h-full p-4'
                 // style={{
                 //     height, opacity: disableNodes ? 0.85 : 1,
                 //     pointerEvents: disableNodes ? 'none' : 'inherit',
@@ -39,7 +40,7 @@ export const RadarBody = (props: { height: number; }) => {
             >
                 {/* <Ring containerDiameter={height * 0.93} relDiameter={1} borderStyle='dashed'/> */}
                 {/* <Graph containerLength={height * 0.87}/> */}
-                <Graph containerLength={height * 1.1}/>
+                <Graph containerLength={height * 1}/>
             </div>
         </div>
     )

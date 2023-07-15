@@ -1,12 +1,14 @@
 import {useOpinionsContext} from "[2]pages/radar/hooks/use-opinions-context";
-import {Ring} from "[2]pages/radar/views/components/Ring";
+// import {Ring} from "[2]pages/radar/views/components/Ring";
 import {Node} from "[2]pages/radar/views/components/Node";
-import { url } from "inspector";
+// import { url } from "inspector";
 import radar from '../../assets/radar.png'
 
 export const Graph = (props: { containerLength: number; }) => {
     const {containerLength} = props;
-    const {opinions} = useOpinionsContext();
+  const { opinions } = useOpinionsContext();
+  
+  console.log('opinions', opinions)
 
     // const colors = [
     //     '#03d775',
@@ -21,15 +23,17 @@ export const Graph = (props: { containerLength: number; }) => {
 
     return (
       <div
-        // className="aspect-square rounded-full relative overflow-visible"
-        className="aspect-square  relative "
+        className="aspect-square rounded-full relative overflow-visible"
+        // className="aspect-square  relative "
         style={{
           width: containerLength,
+          
           // height: containerLength,
             backgroundImage: `url(${radar})`,
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
+          backgroundPosition: 'center',
+          
 
           //         backgroundImage: `radial-gradient(
           //   ${colors[0]} 10%,
@@ -58,8 +62,11 @@ export const Graph = (props: { containerLength: number; }) => {
               containerLength={containerLength}
               opinion={opinion}
               key={opinion.id}
+              
             />
+          
           ))}
+        
       </div>
     );
 }

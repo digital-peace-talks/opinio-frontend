@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {memo} from 'react';
 import {ChatScreen} from '[2]pages/chat/views/ChatScreen';
 import {RadarScreen} from '[2]pages/radar/views/RadarScreen';

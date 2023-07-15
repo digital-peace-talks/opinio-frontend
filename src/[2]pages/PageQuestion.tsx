@@ -15,18 +15,23 @@ export const PageQuestion = () => {
 
     const text = truncate ? currentOpinion?.opinion?.substring(0, 250) : currentOpinion?.opinion
     return (
-        <div
-            className='flex justify-center items-center box-content text-center text-white text-sm md:text-lg'
-            style={{
-                fontFamily: 'Lufga-Regular',
-                padding: `10px 30px`,
-                backgroundImage: 'linear-gradient(to right, black, #0702a1, black)'
-            }}>
-            <p className='inline'>
+        // <div
+        //     className='flex justify-center items-center box-content text-center text-white text-sm md:text-lg'
+        //     style={{
+        //         // fontFamily: 'Lufga-Regular',
+        //         // padding: `10px 30px`,
+        //         // backgroundImage: 'linear-gradient(to right, black, #0702a1, black)'
+        //     }}>
+            // <p className='inline'>
+            //     {isChat ? text : 'What should be done about climate change?'}
+            //     {isChat && truncate &&
+            //       <span className='inline cursor-pointer' onClick={() => setTruncate(false)}>...</span>}
+            // </p>
+            <>
                 {isChat ? text : 'What should be done about climate change?'}
                 {isChat && truncate &&
                   <span className='inline cursor-pointer' onClick={() => setTruncate(false)}>...</span>}
-            </p>
-        </div>
+            </>
+        // </div>
     );
 }
