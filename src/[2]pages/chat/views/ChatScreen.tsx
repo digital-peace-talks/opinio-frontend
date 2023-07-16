@@ -22,7 +22,8 @@ export const ChatScreen = memo(() => {
     setChatIndex(+id);
     setCurrentOpinion(filterOpinion(opinions, +id) || null);
   }, [currentOpinion, id, navigate, opinions, setChatIndex, setCurrentOpinion]);
-
+  console.log("Opinion", opinion)
+  console.log("Opinions", opinions)
   return (
     <div className="my-[30px] flex w-full   relative">
       <div
@@ -76,10 +77,11 @@ export const ChatScreen = memo(() => {
         </div>
         <div className="text-white text-2xl font-normal my-7">
           <p className="text-white text-left">
-            {/* {opinion} */}
-            People that can afford it should make donations. The others should
+            {/* {opinions[id].title} */}
+            {currentOpinion?.opinion}
+            {/* People that can afford it should make donations. The others should
             read Drawdown, edited by Paul Hawken, on the 100 best ideas for
-            combating Global Warming.
+            combating Global Warming. */}
           </p>
         </div>
         <div className="text-white mb-3">
